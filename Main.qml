@@ -8,6 +8,7 @@ Item {
     width: 1920
     height: 1080
 
+    // Timer for clock and greeting
     Timer {
         interval: 1000
         running: true
@@ -19,14 +20,15 @@ Item {
             dateLabel.text = Qt.formatDateTime(d, "dd MMMM, yyyy")
             
             var hr = d.getHours()
-            var greeting = "Buonasera"
-            if (hr < 12) greeting = "Buongiorno"
-            else if (hr < 18) greeting = "Buon pomeriggio"
+            var greeting = "Good Evening"
+            if (hr < 12) greeting = "Good Morning"
+            else if (hr < 18) greeting = "Good Afternoon"
             
             greetingLabel.text = "<b> </b> " + greeting + ", " + userListId.currentText
         }
     }
 
+    // Background
     Image {
         id: bg
         anchors.fill: parent
@@ -61,6 +63,9 @@ Item {
             mainContainer.scale = 1
         }
 
+        // ======================
+        // LEFT - LOGIN CARD
+        // ======================
         BlurredCard {
             width: 360; height: 380; radius: 25
             blurSource: bgBlur
@@ -78,7 +83,7 @@ Item {
                 anchors.verticalCenterOffset: -140
             }
             Text {
-                text: "Accedi"
+                text: "Log in"
                 color: "#FFFFFF"
                 font.pixelSize: 38; font.family: "JetBrainsMono Nerd Font"
                 anchors.centerIn: parent
@@ -105,7 +110,7 @@ Item {
 
                 contentItem: Item {
                     Text {
-                        text: "utente <b></b>"
+                        text: "username <b></b>"
                         color: "#777788"
                         font.pixelSize: 11; font.family: "JetBrainsMono Nerd Font"
                         anchors.top: parent.top
@@ -223,6 +228,9 @@ Item {
             }
         }
 
+        // ======================
+        // LEFT - CLOCK CARD
+        // ======================
         BlurredCard {
             width: 360; height: 160; radius: 25
             blurSource: bgBlur
@@ -242,7 +250,7 @@ Item {
             }
             Text {
                 id: greetingLabel
-                text: "<b> </b> Benvenuto"
+                text: "<b> </b> Welcome"
                 color: "#888899"
                 font.pixelSize: 14; font.family: "JetBrainsMono Nerd Font"
                 anchors.centerIn: parent
@@ -250,6 +258,9 @@ Item {
             }
         }
 
+        // ======================
+        // RIGHT - PROFILE CARD (with real avatar)
+        // ======================
         BlurredCard {
             width: 360; height: 380; radius: 25
             blurSource: bgBlur
@@ -260,25 +271,49 @@ Item {
             anchors.verticalCenterOffset: -160
             z: 1
 
-            Rectangle {
-                width: 120; height: 120; radius: 60
-                color: Qt.rgba(0, 0, 0, 0.5)
-                border.color: "#333344"
-                border.width: 1
+            // Real user profile picture
+            Image {
+                id: avatarImage
+                width: 120
+                height: 120
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: -90
-
-                Text {
-                    text: ""
-                    color: "#FFFFFF"
-                    font.pixelSize: 60; font.family: "JetBrainsMono Nerd Font"
-                    anchors.centerIn: parent
+                fillMode: Image.PreserveAspectCrop
+                // This line takes the real face of the selected user
+                source: userListId.currentIndex >= 0 ? userModel.data(userModel.index(userListId.currentIndex, 0), 260) : ""
+                
+                layer.enabled: true
+                layer.effect: OpacityMask {
+                    maskSource: Rectangle {
+                        width: 120
+                        height: 120
+                        radius: 60          // makes it a perfect circle
+                    }
                 }
+
+                // Nice border around the photo
+                Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
+                    border.color: "#444455"
+                    border.width: 3
+                    radius: 60
+                }
+            }
+
+            // Fallback icon if no photo is found
+            Text {
+                visible: avatarImage.status !== Image.Ready
+                text: ""
+                color: "#FFFFFF"
+                font.pixelSize: 60; font.family: "JetBrainsMono Nerd Font"
+                anchors.centerIn: parent
+                anchors.verticalCenterOffset: -90
             }
 
             Text {
                 id: dayLabel
-                text: "<b>GIORNO</b>"
+                text: "<b>DAY</b>"
                 color: "#FFFFFF"
                 font.pixelSize: 34; font.family: "JetBrainsMono Nerd Font"
                 anchors.centerIn: parent
@@ -286,7 +321,7 @@ Item {
             }
             Text {
                 id: dateLabel
-                text: "Data"
+                text: "Date"
                 color: "#888899"
                 font.pixelSize: 14; font.family: "JetBrainsMono Nerd Font"
                 anchors.centerIn: parent
@@ -294,6 +329,9 @@ Item {
             }
         }
 
+        // ======================
+        // RIGHT - SYSTEM CARD
+        // ======================
         BlurredCard {
             width: 360; height: 320; radius: 25
             blurSource: bgBlur
@@ -335,6 +373,7 @@ Item {
                 anchors.verticalCenterOffset: -75
             }
 
+            // Restart button
             Rectangle {
                 id: btnReboot
                 width: 150; height: 75; radius: 18
@@ -364,7 +403,7 @@ Item {
                     anchors.verticalCenterOffset: -12
                 }
                 Text {
-                    text: "Riavvia"
+                    text: "Restart"
                     color: "#888899"
                     font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"
                     anchors.centerIn: parent
@@ -372,6 +411,7 @@ Item {
                 }
             }
 
+            // Shutdown button
             Rectangle {
                 id: btnPower
                 width: 150; height: 75; radius: 18
@@ -401,7 +441,7 @@ Item {
                     anchors.verticalCenterOffset: -12
                 }
                 Text {
-                    text: "Spegni"
+                    text: "Shutdown"
                     color: "#888899"
                     font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"
                     anchors.centerIn: parent
@@ -409,6 +449,7 @@ Item {
                 }
             }
 
+            // Session selector
             Rectangle {
                 width: 320; height: 65; radius: 18
                 color: Qt.rgba(0, 0, 0, 0.50)
@@ -424,13 +465,11 @@ Item {
                     textRole: "name"
                     currentIndex: sessionModel.lastIndex
 
-                    background: Rectangle {
-                        color: "transparent"
-                    }
+                    background: Rectangle { color: "transparent" }
 
                     contentItem: Item {
                         Text {
-                            text: "Ambiente Desktop <b></b>"
+                            text: "Desktop Environment <b></b>"
                             color: "#777788"
                             font.pixelSize: 10; font.family: "JetBrainsMono Nerd Font"
                             anchors.horizontalCenter: parent.horizontalCenter
