@@ -26,7 +26,7 @@ Open your terminal and run:
 `sudo pacman -S qt5-graphicaleffects qt5-quickcontrols qt5-quickcontrols2 qt6-5compat`
 
 ### Step 2: Download the theme
-`git clone https://github.com/TUO-USERNAME/stealth-dark-sddm.git`
+`git clone https://github.com/madebydarkxz/stealth-dark-sddm.git`
 
 ### Step 3: Enter the folder
 `cd stealth-dark-sddm`
