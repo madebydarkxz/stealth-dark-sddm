@@ -22,27 +22,66 @@ Optimized for **CachyOS**, **Arch Linux**, **Ubuntu**, **Linux Mint**, **Debian*
 
 ---
 
-## 🛠️ Quick One-Line Installation Guide
+## 🛠️ Step-by-Step Installation Guide
 
-Just copy and paste the entire command block for your Linux distribution into your terminal!
+### Step 1: Install Required Dependencies
 
-### 🔹 For Arch Linux / CachyOS / Manjaro:
+**For Arch Linux / CachyOS / Manjaro (`pacman`):**
 ```bash
-sudo pacman -S --needed qt5-graphicaleffects qt5-quickcontrols qt5-quickcontrols2 qt6-5compat git && git clone https://github.com/madebydarkxz/stealth-dark-sddm.git && cd stealth-dark-sddm && sudo cp -r . /usr/share/sddm/themes/stealth-dark && sudo mkdir -p /etc/sddm.conf.d && echo -e "[Theme]\nCurrent=stealth-dark" | sudo tee /etc/sddm.conf.d/theme.conf && sddm-greeter --test-mode --theme /usr/share/sddm/themes/stealth-dark
-
-🔹 For Ubuntu / Linux Mint / Pop!_OS / Debian:
+sudo pacman -S qt5-graphicaleffects qt5-quickcontrols qt5-quickcontrols2 qt6-5compat
+For Ubuntu / Linux Mint / Pop!_OS / Debian (apt):
 
 Bash
 
-sudo apt update && sudo apt install -y qml-module-qtgraphicaleffects qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qtquick-layouts sddm git && git clone https://github.com/madebydarkxz/stealth-dark-sddm.git && cd stealth-dark-sddm && sudo cp -r . /usr/share/sddm/themes/stealth-dark && sudo mkdir -p /etc/sddm.conf.d && echo -e "[Theme]\nCurrent=stealth-dark" | sudo tee /etc/sddm.conf.d/theme.conf && sddm-greeter --test-mode --theme /usr/share/sddm/themes/stealth-dark
+sudo apt update && sudo apt install -y qml-module-qtgraphicaleffects qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qtquick-layouts sddm git
 
+Step 2: Download the theme from GitHub
+
+Bash
+
+git clone https://github.com/madebydarkxz/stealth-dark-sddm.git
+
+Step 3: Enter the downloaded theme folder
+
+Bash
+
+cd stealth-dark-sddm
+
+Step 4: Copy the theme to SDDM system folder
+
+Bash
+
+sudo cp -r . /usr/share/sddm/themes/stealth-dark
+
+Step 5: Ensure configuration directory exists
+
+Bash
+
+sudo mkdir -p /etc/sddm.conf.d
+
+Step 6: Create configuration header
+
+Bash
+
+echo "[Theme]" | sudo tee /etc/sddm.conf.d/theme.conf
+
+Step 7: Activate the Stealth Dark theme
+
+Bash
+
+echo "Current=stealth-dark" | sudo tee -a /etc/sddm.conf.d/theme.conf
+
+Step 8: Test the theme (without rebooting!)
+
+Bash
+
+sddm-greeter --test-mode --theme /usr/share/sddm/themes/stealth-dark
 🖼️ Custom Wallpaper
 
 You can easily use your own wallpaper:
 
     Rename your preferred image to background.jpg.
     Replace the background.jpg file located in /usr/share/sddm/themes/stealth-dark/ with your image.
-
 📜 Credits
 
     Based on the original Ronin theme.
