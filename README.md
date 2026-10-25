@@ -29,60 +29,72 @@ Optimized for **CachyOS**, **Arch Linux**, **Ubuntu**, **Linux Mint**, **Debian*
 **For Arch Linux / CachyOS / Manjaro (`pacman`):**
 ```bash
 sudo pacman -S qt5-graphicaleffects qt5-quickcontrols qt5-quickcontrols2 qt6-5compat
-For Ubuntu / Linux Mint / Pop!_OS / Debian (apt):
+```
 
-Bash
-
+**For Ubuntu / Linux Mint / Pop!_OS / Debian (`apt`):**
+```bash
 sudo apt update && sudo apt install -y qml-module-qtgraphicaleffects qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qtquick-layouts sddm git
+```
 
-Step 2: Download the theme from GitHub
+---
 
-Bash
-
+### Step 2: Download the theme from GitHub
+```bash
 git clone https://github.com/madebydarkxz/stealth-dark-sddm.git
+```
 
-Step 3: Enter the downloaded theme folder
+---
 
-Bash
-
+### Step 3: Enter the downloaded theme folder
+```bash
 cd stealth-dark-sddm
+```
 
-Step 4: Copy the theme to SDDM system folder
+---
 
-Bash
-
+### Step 4: Copy the theme to SDDM system folder
+```bash
 sudo cp -r . /usr/share/sddm/themes/stealth-dark
+```
 
-Step 5: Ensure configuration directory exists
+---
 
-Bash
-
+### Step 5: Ensure configuration directory exists
+```bash
 sudo mkdir -p /etc/sddm.conf.d
+```
 
-Step 6: Create configuration header
+---
 
-Bash
-
+### Step 6: Create configuration header
+```bash
 echo "[Theme]" | sudo tee /etc/sddm.conf.d/theme.conf
+```
 
-Step 7: Activate the Stealth Dark theme
+---
 
-Bash
-
+### Step 7: Activate the Stealth Dark theme
+```bash
 echo "Current=stealth-dark" | sudo tee -a /etc/sddm.conf.d/theme.conf
+```
 
-Step 8: Test the theme (without rebooting!)
+---
 
-Bash
-
+### Step 8: Test the theme (without rebooting!)
+```bash
 sddm-greeter --test-mode --theme /usr/share/sddm/themes/stealth-dark
-🖼️ Custom Wallpaper
+```
+
+---
+
+## 🖼️ Custom Wallpaper
 
 You can easily use your own wallpaper:
+1. Rename your preferred image to `background.jpg`.
+2. Replace the `background.jpg` file located in `/usr/share/sddm/themes/stealth-dark/` with your image.
 
-    Rename your preferred image to background.jpg.
-    Replace the background.jpg file located in /usr/share/sddm/themes/stealth-dark/ with your image.
-📜 Credits
+---
 
-    Based on the original Ronin theme.
-    Completely overhauled and updated for dark glassmorphism aesthetic, smooth transitions, and multi-distro compatibility by madebydarkxz.
+## 📜 Credits
+- Based on the original **Ronin** theme.
+- Completely overhauled and updated for dark glassmorphism aesthetic, smooth transitions, and multi-distro compatibility by **madebydarkxz**.
