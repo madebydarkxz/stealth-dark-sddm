@@ -8,23 +8,26 @@ Item {
     width: 1920
     height: 1080
 
-    // Timer for clock and greeting
+    // Timer for clock and greeting (Forced English Date)
     Timer {
         interval: 1000
         running: true
         repeat: true
         onTriggered: {
-            var d = new Date()
-            timeLabel.text = Qt.formatDateTime(d, "hh:mm")
-            dayLabel.text = Qt.formatDateTime(d, "ddd").toUpperCase()
-            dateLabel.text = Qt.formatDateTime(d, "dd MMMM, yyyy")
+            var d = new Date();
+            var days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            timeLabel.text = Qt.formatDateTime(d, "hh:mm");
+            dayLabel.text = "<b>" + days[d.getDay()] + "</b>";
+            dateLabel.text = d.getDate() + " " + months[d.getMonth()] + ", " + d.getFullYear();
             
-            var hr = d.getHours()
-            var greeting = "Good Evening"
-            if (hr < 12) greeting = "Good Morning"
-            else if (hr < 18) greeting = "Good Afternoon"
+            var hr = d.getHours();
+            var greeting = "Good Evening";
+            if (hr < 12) greeting = "Good Morning";
+            else if (hr < 18) greeting = "Good Afternoon";
             
-            greetingLabel.text = "<b> </b> " + greeting + ", " + userListId.currentText
+            greetingLabel.text = "<b> </b> " + greeting + ", " + userListId.currentText;
         }
     }
 
@@ -32,7 +35,7 @@ Item {
     Image {
         id: bg
         anchors.fill: parent
-        source: config.background
+        source: "background.jpg"
         fillMode: Image.PreserveAspectCrop
         
         Rectangle {
@@ -59,8 +62,8 @@ Item {
         Behavior on scale { NumberAnimation { duration: 500; easing.type: Easing.OutCubic } }
 
         Component.onCompleted: {
-            mainContainer.opacity = 1
-            mainContainer.scale = 1
+            mainContainer.opacity = 1;
+            mainContainer.scale = 1;
         }
 
         // ======================
@@ -222,7 +225,7 @@ Item {
                     passwordCharacter: "●"
                     focus: true
                     onAccepted: {
-                        sddm.login(userListId.currentText, passwordInput.text, sessionListId.currentIndex)
+                        sddm.login(userListId.currentText, passwordInput.text, sessionListId.currentIndex);
                     }
                 }
             }
@@ -259,7 +262,7 @@ Item {
         }
 
         // ======================
-        // RIGHT - PROFILE CARD (with real avatar)
+        // RIGHT - PROFILE CARD
         // ======================
         BlurredCard {
             width: 360; height: 380; radius: 25
@@ -271,7 +274,6 @@ Item {
             anchors.verticalCenterOffset: -160
             z: 1
 
-            // Real user profile picture
             Image {
                 id: avatarImage
                 width: 120
@@ -279,7 +281,6 @@ Item {
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: -90
                 fillMode: Image.PreserveAspectCrop
-                // This line takes the real face of the selected user
                 source: userListId.currentIndex >= 0 ? userModel.data(userModel.index(userListId.currentIndex, 0), 260) : ""
                 
                 layer.enabled: true
@@ -287,11 +288,10 @@ Item {
                     maskSource: Rectangle {
                         width: 120
                         height: 120
-                        radius: 60          // makes it a perfect circle
+                        radius: 60
                     }
                 }
 
-                // Nice border around the photo
                 Rectangle {
                     anchors.fill: parent
                     color: "transparent"
@@ -301,7 +301,6 @@ Item {
                 }
             }
 
-            // Fallback icon if no photo is found
             Text {
                 visible: avatarImage.status !== Image.Ready
                 text: ""
@@ -315,7 +314,7 @@ Item {
                 id: dayLabel
                 text: "<b>DAY</b>"
                 color: "#FFFFFF"
-                font.pixelSize: 34; font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: 30; font.family: "JetBrainsMono Nerd Font"
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: 15
             }
@@ -351,29 +350,29 @@ Item {
                 color: Qt.rgba(0, 0, 0, 0.7)
             }
 
+            // Universal Linux Icon
             Text {
                 text: " <b></b> "
                 color: "#FFFFFF"
-                font.pixelSize: 24; font.family: "JetBrainsMono Nerd Font"
+                font.pixelSize: 28; font.family: "JetBrainsMono Nerd Font"
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: -130
             }
             Text {
-                text: "CachyOS Linux"
+                text: "Linux System"
                 color: "#FFFFFF"
                 font.pixelSize: 18; font.family: "JetBrainsMono Nerd Font"
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: -95
             }
             Text {
-                text: sddm.hostName + " System"
+                text: sddm.hostName
                 color: "#777788"
                 font.pixelSize: 12; font.family: "JetBrainsMono Nerd Font"
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: -75
             }
 
-            // Restart button
             Rectangle {
                 id: btnReboot
                 width: 150; height: 75; radius: 18
@@ -411,7 +410,6 @@ Item {
                 }
             }
 
-            // Shutdown button
             Rectangle {
                 id: btnPower
                 width: 150; height: 75; radius: 18
@@ -449,7 +447,6 @@ Item {
                 }
             }
 
-            // Session selector
             Rectangle {
                 width: 320; height: 65; radius: 18
                 color: Qt.rgba(0, 0, 0, 0.50)
@@ -540,12 +537,23 @@ Item {
             
             Connections {
                 target: sddm
-                function onLoginSucceeded() {}
-                function onLoginFailed() {
-                    passwordInput.text = ""
-                    passBox.border.color = "#FF4444"
+                onLoginSucceeded: {}
+                onLoginFailed: {
+                    passwordInput.text = "";
+                    passBox.border.color = "#FF4444";
                 }
             }
         }
+    }
+
+    // Bottom Credit
+    Text {
+        text: "Theme by @madebydarkxz"
+        color: Qt.rgba(1, 1, 1, 0.35)
+        font.pixelSize: 13
+        font.family: "JetBrainsMono Nerd Font"
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: 20
     }
 }
